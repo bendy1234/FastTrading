@@ -18,6 +18,4 @@ public interface MerchantScreenHooks {
     void speedtrading$autofillSellSlots();
     void speedtrading$performTrade();
     void speedtrading$clearSellSlots();
-
-    void speedtrading$callRenderTooltip(MatrixStack matrices, List<Text> lines, int x, int y);
 }

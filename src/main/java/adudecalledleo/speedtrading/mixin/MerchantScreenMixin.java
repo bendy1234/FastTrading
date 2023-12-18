@@ -105,11 +105,6 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     }
 
     @Override
-    public void speedtrading$callRenderTooltip(MatrixStack matrices, List<Text> lines, int x, int y) {
-        renderTooltip(matrices, lines, x, y);
-    }
-
-    @Override
     protected void handledScreenTick() {
         super.handledScreenTick();
         speedTradeButton.tick();
