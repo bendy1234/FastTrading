@@ -30,6 +30,6 @@
   "depends": {
     "fabricloader": ">=0.10.1+build.209",
     "fabric": "*",
-    "minecraft": ">=1.19.3"
+    "minecraft": ["1.19.3", "1.19.4"]
   }
 }
