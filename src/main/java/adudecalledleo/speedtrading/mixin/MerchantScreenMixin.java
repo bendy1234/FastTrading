@@ -1,20 +1,10 @@
 package adudecalledleo.speedtrading.mixin;
 
-import java.util.List;
-
 import adudecalledleo.speedtrading.config.ModConfig;
 import adudecalledleo.speedtrading.duck.MerchantScreenHooks;
 import adudecalledleo.speedtrading.gui.SpeedTradeButton;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.MerchantScreenHandler;
@@ -23,6 +13,12 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static adudecalledleo.speedtrading.util.PlayerInventoryUtil.playerCanAcceptStack;
 import static adudecalledleo.speedtrading.util.PlayerInventoryUtil.playerCanPerformTrade;
@@ -102,11 +98,6 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     public void speedtrading$clearSellSlots() {
         onMouseClick(null, 0, 0, SlotActionType.QUICK_MOVE);
         onMouseClick(null, 1, 0, SlotActionType.QUICK_MOVE);
-    }
-
-    @Override
-    public void speedtrading$callRenderTooltip(MatrixStack matrices, List<Text> lines, int x, int y) {
-        renderTooltip(matrices, lines, x, y);
     }
 
     @Override

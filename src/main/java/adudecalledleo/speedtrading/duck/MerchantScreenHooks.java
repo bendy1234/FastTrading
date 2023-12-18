@@ -1,9 +1,5 @@
 package adudecalledleo.speedtrading.duck;
 
-import java.util.List;
-
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
 import net.minecraft.village.TradeOffer;
 
 public interface MerchantScreenHooks {
@@ -18,6 +14,4 @@ public interface MerchantScreenHooks {
     void speedtrading$autofillSellSlots();
     void speedtrading$performTrade();
     void speedtrading$clearSellSlots();
-
-    void speedtrading$callRenderTooltip(MatrixStack matrices, List<Text> lines, int x, int y);
 }

@@ -1,25 +1,24 @@
 package adudecalledleo.speedtrading.gui;
 
-import java.util.ArrayList;
-import java.util.Locale;
-
 import adudecalledleo.speedtrading.ModKeyBindings;
 import adudecalledleo.speedtrading.SpeedTradeTimer;
 import adudecalledleo.speedtrading.SpeedTrading;
 import adudecalledleo.speedtrading.duck.MerchantScreenHooks;
 import com.mojang.blaze3d.systems.RenderSystem;
-
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.render.GameRenderer;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.village.TradeOffer;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 import static adudecalledleo.speedtrading.ModKeyBindings.keyOverrideBlock;
 
@@ -88,7 +87,7 @@ public class SpeedTradeButton extends PressableWidget {
     private static final Identifier BUTTON_LOCATION = SpeedTrading.id("textures/gui/speedtrade.png");
 
     @Override
-    public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+    public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
         // I have no clue if GameRenderer::getPositionTexShader is the same, but it works
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, BUTTON_LOCATION);
@@ -100,7 +99,7 @@ public class SpeedTradeButton extends PressableWidget {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-        drawTexture(matrices, this.getX(), this.getY(), 0, v, 20, 18, 20, 54);
+        context.drawTexture(BUTTON_LOCATION, getX(), getY(), 0, v, 20, 18, 20, 54);
     }
 
     @Override
