@@ -8,7 +8,7 @@ import net.minecraft.village.TradeOffer;
 
 public class PlayerInventoryUtil {
     public static boolean areItemsEqual(ItemStack a, ItemStack b) {
-        return ItemStack.areItemsEqualIgnoreDamage(a, b) &&
+        return ItemStack.areItemsEqual(a, b) &&
                 (!a.hasNbt() || b.hasNbt() && NbtHelper.matches(b.getNbt(), a.getNbt(), false));
     }
 

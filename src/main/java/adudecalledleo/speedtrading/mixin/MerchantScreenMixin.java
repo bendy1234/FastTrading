@@ -29,7 +29,6 @@ import static adudecalledleo.speedtrading.util.PlayerInventoryUtil.playerCanPerf
 
 @Mixin(MerchantScreen.class)
 public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHandler> implements MerchantScreenHooks {
-    @SuppressWarnings("FieldMayBeFinal")
     @Shadow private int selectedIndex;
 
     @Shadow protected abstract void syncRecipeIndex();
@@ -37,6 +36,8 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     @Unique private PlayerInventory playerInventory;
     @Unique private SpeedTradeButton speedTradeButton;
 
+
+    @SuppressWarnings("DataFlowIssue")
     public MerchantScreenMixin() {
         super(null, null, null);
         throw new RuntimeException("Mixin constructor called?!");
@@ -50,12 +51,6 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     @Inject(method = "init", at = @At("TAIL"))
     public void addSpeedTradeButton(CallbackInfo ci) {
         addDrawableChild(speedTradeButton = new SpeedTradeButton(x + 247, y + 36, this));
-    }
-
-    @Override
-    protected void drawMouseoverTooltip(MatrixStack matrices, int x, int y) {
-        super.drawMouseoverTooltip(matrices, x, y);
-        speedTradeButton.renderTooltip(matrices, x, y);
     }
 
     @Override

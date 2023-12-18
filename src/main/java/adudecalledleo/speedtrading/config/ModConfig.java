@@ -1,12 +1,12 @@
 package adudecalledleo.speedtrading.config;
 
-import adudecalledleo.speedtrading.SpeedTrading;
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-@Config(name = SpeedTrading.MOD_ID)
+// use old name so I don't need to rename translation keys
+@Config(name = "speedtrading")
 public class ModConfig implements ConfigData {
     public static ModConfig get() {
         return AutoConfig.getConfigHolder(ModConfig.class).getConfig();

@@ -9,6 +9,8 @@ import adudecalledleo.speedtrading.SpeedTrading;
 import adudecalledleo.speedtrading.duck.MerchantScreenHooks;
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -87,7 +89,8 @@ public class SpeedTradeButton extends PressableWidget {
 
     @Override
     public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        // I have no clue if GameRenderer::getPositionTexShader is the same, but it works
+        RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, BUTTON_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
         int v = 36;
@@ -97,19 +100,30 @@ public class SpeedTradeButton extends PressableWidget {
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-        drawTexture(matrices, x, y, 0, v, 20, 18, 20, 54);
+        drawTexture(matrices, this.getX(), this.getY(), 0, v, 20, 18, 20, 54);
     }
 
     @Override
-    public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
+    protected void appendClickableNarrations(NarrationMessageBuilder builder) {
+    }
+
+    @Override
+    protected void applyTooltip() {
         if (!isHovered())
             return;
-        ArrayList<Text> textList = new ArrayList<>();
+
+        Screen screen = MinecraftClient.getInstance().currentScreen;
+        if (screen == null) {
+            return;
+        }
+
+        ArrayList<OrderedText> textList = new ArrayList<>();
         if (phase > PHASE_NONE) {
             textList.add(Text.translatable("speedtrading.tooltip.in_progress").styled(
                     style -> style.withFormatting(Formatting.BOLD, Formatting.ITALIC, Formatting.DARK_GREEN)
-            ));
-        } else {
+            ).asOrderedText());
+        }
+        else {
             MerchantScreenHooks.State state = hooks.speedtrading$computeState();
             if (state == MerchantScreenHooks.State.CAN_PERFORM) {
                 boolean isBlocked = hooks.speedtrading$isCurrentTradeOfferBlocked();
@@ -117,50 +131,51 @@ public class SpeedTradeButton extends PressableWidget {
                 if (isBlocked && !isOverriden) {
                     textList.add(Text.translatable("speedtrading.tooltip.cannot_perform").styled(
                             style -> style.withFormatting(Formatting.BOLD, Formatting.RED)
-                    ));
+                    ).asOrderedText());
                     textList.add(Text.translatable("speedtrading.tooltip.blocked").styled(
                             style -> style.withFormatting(Formatting.ITALIC, Formatting.GRAY)
-                    ));
+                    ).asOrderedText());
                     if (keyOverrideBlock.isUnbound()) {
                         textList.add(Text.translatable("speedtrading.tooltip.unblock_hint.unbound[0]",
                                 Texts.bracketed(Text.translatable(keyOverrideBlock.getTranslationKey())
                                         .styled(style -> style.withBold(true).withColor(Formatting.WHITE))))
-                                .styled(style -> style.withColor(Formatting.GRAY)));
+                                .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
                         textList.add(Text.translatable("speedtrading.tooltip.unblock_hint.unbound[1]")
-                                .styled(style -> style.withColor(Formatting.GRAY)));
+                                .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
                     } else {
                         textList.add(Text.translatable("speedtrading.tooltip.unblock_hint",
                                 Texts.bracketed(Text.translatable(keyOverrideBlock.getBoundKeyTranslationKey())
                                         .styled(style -> style.withBold(true).withColor(Formatting.WHITE))))
-                                .styled(style -> style.withColor(Formatting.GRAY)));
+                                .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
                     }
                 } else {
                     textList.add(Text.translatable("speedtrading.tooltip.can_perform").styled(
                             style -> style.withFormatting(Formatting.BOLD, Formatting.GREEN)
-                    ));
+                    ).asOrderedText());
                     if (isBlocked) {
                         textList.add(Text.translatable("speedtrading.tooltip.can_perform.unblock_hint")
-                                .styled(style -> style.withItalic(true).withColor(Formatting.GRAY)));
+                                .styled(style -> style.withItalic(true).withColor(Formatting.GRAY)).asOrderedText());
                     }
                 }
             } else {
                 textList.add(Text.translatable("speedtrading.tooltip.cannot_perform").styled(
                         style -> style.withFormatting(Formatting.BOLD, Formatting.RED)
-                ));
+                ).asOrderedText());
                 textList.add(
                         Text.translatable("speedtrading.tooltip." + state.name().toLowerCase(Locale.ROOT)).styled(
                                 style -> style.withFormatting(Formatting.ITALIC, Formatting.GRAY)
-                        ));
+                        ).asOrderedText());
             }
-            textList.add(Text.empty());
+            textList.add(Text.empty().asOrderedText());
             appendTradeDescription(hooks.speedtrading$getCurrentTradeOffer(), textList);
         }
-        hooks.speedtrading$callRenderTooltip(matrices, textList, mouseX, mouseY);
+
+        screen.setTooltip(textList);
     }
 
     private static final Style STYLE_GRAY = Style.EMPTY.withColor(Formatting.GRAY);
 
-    private void appendTradeDescription(TradeOffer offer, ArrayList<Text> destList) {
+    private void appendTradeDescription(TradeOffer offer, ArrayList<OrderedText> destList) {
         if (offer == null)
             return;
         ItemStack originalFirstBuyItem = offer.getOriginalFirstBuyItem();
@@ -168,16 +183,16 @@ public class SpeedTradeButton extends PressableWidget {
         ItemStack secondBuyItem = offer.getSecondBuyItem();
         ItemStack sellItem = offer.getSellItem();
         destList.add(Text.translatable("speedtrading.tooltip.current_trade.is")
-                .styled(style -> style.withColor(Formatting.GRAY)));
+                .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
         destList.add(createItemStackDescription(originalFirstBuyItem, adjustedFirstBuyItem)
-                .fillStyle(STYLE_GRAY));
+                .fillStyle(STYLE_GRAY).asOrderedText());
         if (!secondBuyItem.isEmpty())
             destList.add(Text.translatable("speedtrading.tooltip.current_trade.and",
                     createItemStackDescription(secondBuyItem))
-                    .fillStyle(STYLE_GRAY));
+                    .fillStyle(STYLE_GRAY).asOrderedText());
         destList.add(Text.translatable("speedtrading.tooltip.current_trade.for",
                 createItemStackDescription(sellItem))
-                .fillStyle(STYLE_GRAY));
+                .fillStyle(STYLE_GRAY).asOrderedText());
     }
 
     private MutableText createItemStackDescription(ItemStack stack, ItemStack adjustedStack) {
@@ -202,6 +217,4 @@ public class SpeedTradeButton extends PressableWidget {
         return Texts.bracketed(Text.literal("").append(stack.getName()).styled(style -> style.withFormatting(stack.getRarity().formatting)));
     }
 
-    @Override
-    public void appendNarrations(NarrationMessageBuilder builder) { }
 }

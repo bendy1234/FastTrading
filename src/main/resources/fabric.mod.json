@@ -1,15 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "speedtrading",
+  "id": "fasttrading",
   "version": "${version}",
-  "name": "Speed Trading",
-  "description": "Adds a button to the villager trading GUI to repeat the current trade until it's no longer available.",
+  "name": "Fast Trading",
+  "description": "Adds a button to the villager trading GUI to repeat the current trade until it's no longer available (again).",
   "authors": [
-    "ADudeCalledLeo"
+    "ADudeCalledLeo",
+    "bendy1234"
   ],
   "contact": {
-    "homepage": "https://curseforge.com/minecraft/mc-mods/speed-trading",
-    "sources": "https://github.com/Leo40Git/SpeedTrading"
+    "sources": "https://github.com/bendy1234/FastTrading",
+    "issues": "https://github.com/bendy1234/FastTrading/issues"
   },
   "license": "MIT",
   "icon": "assets/speedtrading/icon.png",
@@ -25,18 +26,10 @@
   "mixins": [
     "speedtrading.mixins.json"
   ],
+  "accessWidener": "fasttrading.accesswidener",
   "depends": {
     "fabricloader": ">=0.10.1+build.209",
     "fabric": "*",
-    "minecraft": "~1.19"
-  },
-  "suggests": {
-    "modupdater": "*"
-  },
-  "custom": {
-    "modupdater": {
-      "strategy": "curseforge",
-      "projectID": 391016
-    }
+    "minecraft": "1.19.3"
   }
 }

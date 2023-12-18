@@ -25,12 +25,6 @@ def depImpl(String id, boolean include = false) {
         }
 }
 
-def depRuntime(String id) {
-    dependencies.modRuntime(id) {
-        exclude group: "net.fabricmc.fabric-api"
-    }
-}
-
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -46,20 +40,8 @@ dependencies {
     depImpl "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
-if (Boolean.valueOf(project.use_runtime_deps)) {
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
-
-    dependencies {
-        // DataBreaker applies a number of patches to eliminate the loading of data fixers
-        // This greatly reduces the amount of time needed to start the game, but is generally unsafe in production
-        depRuntime "com.github.SuperCoder7979:databreaker:${project.databreaker_version}"
-        // JellySquid's elemental optimizations
-        depRuntime "com.github.jellysquid3:lithium-fabric:${project.lithium_version}"
-        depRuntime "com.github.jellysquid3:phosphor-fabric:${project.phosphor_version}"
-        depRuntime "com.github.jellysquid3:sodium-fabric:${project.sodium_version}"
-    }
+loom {
+    accessWidenerPath = file("src/main/resources/fasttrading.accesswidener")
 }
 
 processResources {

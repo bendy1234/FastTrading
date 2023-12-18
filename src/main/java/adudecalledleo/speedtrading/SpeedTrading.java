@@ -12,13 +12,14 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.util.Identifier;
 
 public class SpeedTrading implements ClientModInitializer {
-    public static final String MOD_ID = "speedtrading";
-    public static final String MOD_NAME = "Speed Trading";
+    public static final String MOD_ID = "fasttrading";
+    public static final String MOD_NAME = "Fast Trading";
 
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
+    // use old name so I don't need to rename files
     public static Identifier id(String path) {
-        return new Identifier(MOD_ID, path);
+        return new Identifier("speedtrading", path);
     }
 
     @Override
