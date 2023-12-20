@@ -87,7 +87,7 @@ public class SpeedTradeButton extends PressableWidget {
     private static final Identifier BUTTON_LOCATION = SpeedTrading.id("textures/gui/speedtrade.png");
 
     @Override
-    public void renderButton(DrawContext context, int mouseX, int mouseY, float delta) {
+    public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
         // I have no clue if GameRenderer::getPositionTexShader is the same, but it works
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, BUTTON_LOCATION);
@@ -100,13 +100,13 @@ public class SpeedTradeButton extends PressableWidget {
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
         context.drawTexture(BUTTON_LOCATION, getX(), getY(), 0, v, 20, 18, 20, 54);
+        applyTooltip();
     }
 
     @Override
     protected void appendClickableNarrations(NarrationMessageBuilder builder) {
     }
 
-    @Override
     protected void applyTooltip() {
         if (!isHovered())
             return;
