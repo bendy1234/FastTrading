@@ -178,8 +178,8 @@ public class SpeedTradeButton extends PressableWidget {
         if (offer == null)
             return;
         ItemStack originalFirstBuyItem = offer.getOriginalFirstBuyItem();
-        ItemStack adjustedFirstBuyItem = offer.getAdjustedFirstBuyItem();
-        ItemStack secondBuyItem = offer.getSecondBuyItem();
+        ItemStack adjustedFirstBuyItem = offer.getDisplayedFirstBuyItem();
+        ItemStack secondBuyItem = offer.getDisplayedSecondBuyItem();
         ItemStack sellItem = offer.getSellItem();
         destList.add(Text.translatable("speedtrading.tooltip.current_trade.is")
                 .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
@@ -213,7 +213,7 @@ public class SpeedTradeButton extends PressableWidget {
     }
 
     private MutableText getItemStackName(ItemStack stack) {
-        return Texts.bracketed(Text.literal("").append(stack.getName()).styled(style -> style.withFormatting(stack.getRarity().formatting)));
+        return Texts.bracketed(Text.literal("").append(stack.getName()).styled(style -> style.withFormatting(stack.getRarity().getFormatting())));
     }
 
 }

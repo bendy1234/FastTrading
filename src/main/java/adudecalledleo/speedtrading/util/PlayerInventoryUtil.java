@@ -2,14 +2,12 @@ package adudecalledleo.speedtrading.util;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.village.TradeOffer;
 
 public class PlayerInventoryUtil {
     public static boolean areItemsEqual(ItemStack a, ItemStack b) {
-        return ItemStack.areItemsEqual(a, b) &&
-                (!a.hasNbt() || b.hasNbt() && NbtHelper.matches(b.getNbt(), a.getNbt(), false));
+        return ItemStack.areItemsAndComponentsEqual(a, b);
     }
 
     public static boolean listContainsStack(DefaultedList<ItemStack> list, ItemStack stack) {
@@ -28,7 +26,7 @@ public class PlayerInventoryUtil {
     }
 
     public static boolean playerCanPerformTrade(PlayerInventory playerInventory, TradeOffer offer) {
-        return playerHasStack(playerInventory, offer.getAdjustedFirstBuyItem()) && playerHasStack(playerInventory, offer.getSecondBuyItem());
+        return playerHasStack(playerInventory, offer.getDisplayedFirstBuyItem()) && playerHasStack(playerInventory, offer.getDisplayedSecondBuyItem());
     }
 
     public static boolean playerCanAcceptStack(PlayerInventory playerInventory, ItemStack stack) {
