@@ -5,7 +5,6 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-// use old name so I don't need to rename translation keys
 @Config(name = "speedtrading")
 public class ModConfig implements ConfigData {
     public static ModConfig get() {

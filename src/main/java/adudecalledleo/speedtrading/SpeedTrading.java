@@ -17,9 +17,8 @@ public class SpeedTrading implements ClientModInitializer {
 
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
-    // use old name so I don't need to rename files
     public static Identifier id(String path) {
-        return new Identifier("speedtrading", path);
+        return Identifier.of("speedtrading", path);
     }
 
     @Override

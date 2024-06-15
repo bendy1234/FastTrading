@@ -88,7 +88,6 @@ public class SpeedTradeButton extends PressableWidget {
 
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
-        // I have no clue if GameRenderer::getPositionTexShader is the same, but it works
         RenderSystem.setShader(GameRenderer::getPositionTexProgram);
         RenderSystem.setShaderTexture(0, BUTTON_LOCATION);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
