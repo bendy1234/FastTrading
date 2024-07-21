@@ -1,6 +1,10 @@
 package adudecalledleo.speedtrading.mixin;
 
 import adudecalledleo.speedtrading.ModKeyBindings;
+import net.minecraft.client.Keyboard;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.option.KeyBinding;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,16 +12,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.Keyboard;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.option.KeyBinding;
-
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 @Mixin(Keyboard.class)
 public abstract class KeyboardMixin {
-    @Shadow @Final private MinecraftClient client;
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
     @Inject(method = "onKey", at = @At(value = "HEAD"))
     public void updateModKeys(long window, int key, int scancode, int action, int mods, CallbackInfo ci) {

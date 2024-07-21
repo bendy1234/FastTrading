@@ -23,21 +23,20 @@ import java.util.Locale;
 import static adudecalledleo.speedtrading.ModKeyBindings.keyOverrideBlock;
 
 public class SpeedTradeButton extends PressableWidget {
-    private static final int PHASE_NONE = 0;
-    private static final int PHASE_AUTOFILL = 1;
-    private static final int PHASE_PERFORM = 2;
 
+    private static final Identifier BUTTON_LOCATION = SpeedTrading.id("textures/gui/speedtrade.png");
+    private static final Style STYLE_GRAY = Style.EMPTY.withColor(Formatting.GRAY);
     private final MerchantScreenHooks hooks;
-    private int phase;
+    private Phase phase;
 
     public SpeedTradeButton(int x, int y, MerchantScreenHooks hooks) {
         super(x, y, 18, 20, Text.empty());
         this.hooks = hooks;
-        phase = PHASE_NONE;
+        phase = Phase.INACTIVE;
     }
 
     private boolean checkPrimed() {
-        active = phase == PHASE_NONE
+        active = phase == Phase.INACTIVE
                 && hooks.speedtrading$computeState() == MerchantScreenHooks.State.CAN_PERFORM
                 && (ModKeyBindings.isDown(keyOverrideBlock) || !hooks.speedtrading$isCurrentTradeOfferBlocked());
         return active;
@@ -46,14 +45,14 @@ public class SpeedTradeButton extends PressableWidget {
     @Override
     public void onPress() {
         if (checkPrimed()) {
-            phase++;
+            phase = Phase.AUTOFILL;
             SpeedTradeTimer.reset();
         }
     }
 
     private boolean checkState() {
         if (hooks.speedtrading$computeState() != MerchantScreenHooks.State.CAN_PERFORM) {
-            phase = PHASE_NONE;
+            phase = Phase.INACTIVE;
             hooks.speedtrading$clearSellSlots();
             return false;
         }
@@ -61,30 +60,27 @@ public class SpeedTradeButton extends PressableWidget {
     }
 
     public void tick() {
-        if (phase > PHASE_NONE) {
-            active = false;
-            if (SpeedTradeTimer.doAction()) {
-                if (!checkState())
-                    return;
-                switch (phase) {
-                case PHASE_AUTOFILL:
-                    hooks.speedtrading$autofillSellSlots();
-                    phase++;
-                    break;
-                case PHASE_PERFORM:
-                    hooks.speedtrading$performTrade();
-                default:
-                    phase = PHASE_AUTOFILL;
-                    break;
-                }
-                checkState();
-            }
-        } else {
+        if (phase == Phase.INACTIVE) {
             checkPrimed();
+            return;
         }
-    }
+        active = false;
+        if (!SpeedTradeTimer.doAction() || !checkState())
+            return;
 
-    private static final Identifier BUTTON_LOCATION = SpeedTrading.id("textures/gui/speedtrade.png");
+        switch (phase) {
+            case Phase.AUTOFILL:
+                hooks.speedtrading$autofillSellSlots();
+                phase = Phase.TRADE;
+                break;
+            case Phase.TRADE:
+                hooks.speedtrading$performTrade();
+            default:
+                phase = Phase.AUTOFILL;
+                break;
+        }
+        checkState();
+    }
 
     @Override
     public void renderWidget(DrawContext context, int mouseX, int mouseY, float delta) {
@@ -116,12 +112,11 @@ public class SpeedTradeButton extends PressableWidget {
         }
 
         ArrayList<OrderedText> textList = new ArrayList<>();
-        if (phase > PHASE_NONE) {
+        if (phase != Phase.INACTIVE) {
             textList.add(Text.translatable("speedtrading.tooltip.in_progress").styled(
                     style -> style.withFormatting(Formatting.BOLD, Formatting.ITALIC, Formatting.DARK_GREEN)
             ).asOrderedText());
-        }
-        else {
+        } else {
             MerchantScreenHooks.State state = hooks.speedtrading$computeState();
             if (state == MerchantScreenHooks.State.CAN_PERFORM) {
                 boolean isBlocked = hooks.speedtrading$isCurrentTradeOfferBlocked();
@@ -135,15 +130,15 @@ public class SpeedTradeButton extends PressableWidget {
                     ).asOrderedText());
                     if (keyOverrideBlock.isUnbound()) {
                         textList.add(Text.translatable("speedtrading.tooltip.unblock_hint.unbound[0]",
-                                Texts.bracketed(Text.translatable(keyOverrideBlock.getTranslationKey())
-                                        .styled(style -> style.withBold(true).withColor(Formatting.WHITE))))
+                                        Texts.bracketed(Text.translatable(keyOverrideBlock.getTranslationKey())
+                                                .styled(style -> style.withBold(true).withColor(Formatting.WHITE))))
                                 .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
                         textList.add(Text.translatable("speedtrading.tooltip.unblock_hint.unbound[1]")
                                 .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
                     } else {
                         textList.add(Text.translatable("speedtrading.tooltip.unblock_hint",
-                                Texts.bracketed(Text.translatable(keyOverrideBlock.getBoundKeyTranslationKey())
-                                        .styled(style -> style.withBold(true).withColor(Formatting.WHITE))))
+                                        Texts.bracketed(Text.translatable(keyOverrideBlock.getBoundKeyTranslationKey())
+                                                .styled(style -> style.withBold(true).withColor(Formatting.WHITE))))
                                 .styled(style -> style.withColor(Formatting.GRAY)).asOrderedText());
                     }
                 } else {
@@ -171,8 +166,6 @@ public class SpeedTradeButton extends PressableWidget {
         screen.setTooltip(textList);
     }
 
-    private static final Style STYLE_GRAY = Style.EMPTY.withColor(Formatting.GRAY);
-
     private void appendTradeDescription(TradeOffer offer, ArrayList<OrderedText> destList) {
         if (offer == null)
             return;
@@ -186,10 +179,10 @@ public class SpeedTradeButton extends PressableWidget {
                 .fillStyle(STYLE_GRAY).asOrderedText());
         if (!secondBuyItem.isEmpty())
             destList.add(Text.translatable("speedtrading.tooltip.current_trade.and",
-                    createItemStackDescription(secondBuyItem))
+                            createItemStackDescription(secondBuyItem))
                     .fillStyle(STYLE_GRAY).asOrderedText());
         destList.add(Text.translatable("speedtrading.tooltip.current_trade.for",
-                createItemStackDescription(sellItem))
+                        createItemStackDescription(sellItem))
                 .fillStyle(STYLE_GRAY).asOrderedText());
     }
 
@@ -215,4 +208,9 @@ public class SpeedTradeButton extends PressableWidget {
         return Texts.bracketed(Text.literal("").append(stack.getName()).styled(style -> style.withFormatting(stack.getRarity().getFormatting())));
     }
 
+    public enum Phase {
+        INACTIVE,
+        AUTOFILL,
+        TRADE
+    }
 }

@@ -1,6 +1,12 @@
 package adudecalledleo.speedtrading.mixin;
 
 import adudecalledleo.speedtrading.ModKeyBindings;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Mouse;
+import net.minecraft.client.gui.Element;
+import net.minecraft.client.gui.widget.ClickableWidget;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.screen.slot.Slot;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -8,20 +14,17 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.Mouse;
-import net.minecraft.client.gui.Element;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.screen.slot.Slot;
-
 import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
 
 @Mixin(Mouse.class)
 public abstract class MouseMixin {
-    @Shadow @Final private MinecraftClient client;
-    @Shadow private double x;
-    @Shadow private double y;
+    @Shadow
+    @Final
+    private MinecraftClient client;
+    @Shadow
+    private double x;
+    @Shadow
+    private double y;
 
     @Inject(method = "onMouseButton", at = @At("HEAD"))
     public void updateModKeys(long window, int button, int action, int mods, CallbackInfo ci) {

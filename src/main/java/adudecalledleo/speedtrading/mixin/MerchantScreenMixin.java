@@ -25,19 +25,21 @@ import static adudecalledleo.speedtrading.util.PlayerInventoryUtil.playerCanPerf
 
 @Mixin(MerchantScreen.class)
 public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHandler> implements MerchantScreenHooks {
-    @Shadow private int selectedIndex;
-
-    @Shadow protected abstract void syncRecipeIndex();
-
-    @Unique private PlayerInventory playerInventory;
-    @Unique private SpeedTradeButton speedTradeButton;
-
+    @Shadow
+    private int selectedIndex;
+    @Unique
+    private PlayerInventory playerInventory;
+    @Unique
+    private SpeedTradeButton speedTradeButton;
 
     @SuppressWarnings("DataFlowIssue")
     public MerchantScreenMixin() {
         super(null, null, null);
         throw new RuntimeException("Mixin constructor called?!");
     }
+
+    @Shadow
+    protected abstract void syncRecipeIndex();
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void capturePlayerInventory(MerchantScreenHandler handler, PlayerInventory inventory, Text title, CallbackInfo ci) {
@@ -84,7 +86,18 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
 
     @Override
     public void speedtrading$autofillSellSlots() {
-        syncRecipeIndex();
+        switch (ModConfig.get().autofillBehavior) {
+            case DEFAULT -> syncRecipeIndex();
+            case STRICT -> {
+                speedtrading$clearSellSlots();
+                TradeOffer recipe = handler.getRecipes().get(selectedIndex);
+
+                fillSlot(0, recipe.getFirstBuyItem().itemStack());
+                if (recipe.getSecondBuyItem().isPresent()) {
+                    fillSlot(1, recipe.getSecondBuyItem().get().itemStack());
+                }
+            }
+        }
     }
 
     @Override
@@ -104,5 +117,28 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     protected void handledScreenTick() {
         super.handledScreenTick();
         speedTradeButton.tick();
+    }
+
+    @Unique
+    private void fillSlot(int slot, ItemStack item) {
+        int count = 0;
+        for (int i = 3; i < 39; i++) {
+            ItemStack invstack = handler.getSlot(i).getStack();
+            if (!ItemStack.areItemsAndComponentsEqual(item, invstack)) {
+                continue;
+            }
+
+            count += invstack.getCount();
+
+            this.onMouseClick(null, i, 0, SlotActionType.PICKUP);
+            this.onMouseClick(null, slot, 0, SlotActionType.PICKUP);
+
+            if (count > handler.getSlot(slot).getStack().getMaxCount()) { // items still on the cursor
+                this.onMouseClick(null, i, 0, SlotActionType.PICKUP);
+                return;
+            } else if (count == handler.getSlot(slot).getStack().getMaxCount()) {
+                return;
+            }
+        }
     }
 }
