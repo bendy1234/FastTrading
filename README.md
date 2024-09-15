@@ -2,7 +2,7 @@
 Adds a button to the villager trading GUI to repeat the current trade until it's no longer available (again). 
 
 ## Configuration
-This mod can be configured in-game using Mod Menu or by editing the configuration file at `config/fasttrading.json5`.
+This mod can be configured in-game using Mod Menu or by editing the configuration file at `config/fasttrading.json`.
 
 ### Config Options
 - **ticksBetweenActions**: Number of ticks between actions (Default: `1`, Range: 1-100).

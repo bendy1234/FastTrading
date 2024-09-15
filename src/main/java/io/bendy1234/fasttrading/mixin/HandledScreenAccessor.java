@@ -1,4 +1,4 @@
-package adudecalledleo.speedtrading.mixin;
+package io.bendy1234.fasttrading.mixin;
 
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.screen.slot.Slot;

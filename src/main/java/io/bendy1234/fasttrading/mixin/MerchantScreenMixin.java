@@ -1,8 +1,8 @@
-package adudecalledleo.speedtrading.mixin;
+package io.bendy1234.fasttrading.mixin;
 
-import adudecalledleo.speedtrading.config.ModConfig;
-import adudecalledleo.speedtrading.duck.MerchantScreenHooks;
-import adudecalledleo.speedtrading.gui.SpeedTradeButton;
+import io.bendy1234.fasttrading.config.ModConfig;
+import io.bendy1234.fasttrading.duck.MerchantScreenHooks;
+import io.bendy1234.fasttrading.gui.SpeedTradeButton;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.MerchantScreen;
 import net.minecraft.entity.player.PlayerInventory;
@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static adudecalledleo.speedtrading.util.PlayerInventoryUtil.playerCanAcceptStack;
-import static adudecalledleo.speedtrading.util.PlayerInventoryUtil.playerCanPerformTrade;
+import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.playerCanAcceptStack;
+import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.playerCanPerformTrade;
 
 @Mixin(MerchantScreen.class)
 public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHandler> implements MerchantScreenHooks {
@@ -52,10 +52,10 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     }
 
     @Override
-    public State speedtrading$computeState() {
+    public MerchantScreenHooks.State fasttrading$computeState() {
         if (client == null || client.currentScreen != this)
             return State.CLOSED;
-        TradeOffer offer = speedtrading$getCurrentTradeOffer();
+        TradeOffer offer = fasttrading$getCurrentTradeOffer();
         if (offer == null)
             return State.NO_SELECTION;
         if (offer.isDisabled())
@@ -69,7 +69,7 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     }
 
     @Override
-    public TradeOffer speedtrading$getCurrentTradeOffer() {
+    public TradeOffer fasttrading$getCurrentTradeOffer() {
         TradeOfferList tradeOffers = handler.getRecipes();
         if (selectedIndex < 0 || selectedIndex >= tradeOffers.size())
             return null;
@@ -77,19 +77,19 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     }
 
     @Override
-    public boolean speedtrading$isCurrentTradeOfferBlocked() {
-        TradeOffer offer = speedtrading$getCurrentTradeOffer();
+    public boolean fasttrading$isCurrentTradeOfferBlocked() {
+        TradeOffer offer = fasttrading$getCurrentTradeOffer();
         if (offer == null)
             return false;
-        return ModConfig.get().tradeBlockBehavior.isBlocked(offer.getSellItem());
+        return ModConfig.tradeBlockBehavior.isBlocked(offer.getSellItem());
     }
 
     @Override
-    public void speedtrading$autofillSellSlots() {
-        switch (ModConfig.get().autofillBehavior) {
+    public void fasttrading$autofillSellSlots() {
+        switch (ModConfig.autofillBehavior) {
             case DEFAULT -> syncRecipeIndex();
             case STRICT -> {
-                speedtrading$clearSellSlots();
+                fasttrading$clearSellSlots();
                 TradeOffer recipe = handler.getRecipes().get(selectedIndex);
 
                 fillSlot(0, recipe.getFirstBuyItem().itemStack());
@@ -101,14 +101,14 @@ public abstract class MerchantScreenMixin extends HandledScreen<MerchantScreenHa
     }
 
     @Override
-    public void speedtrading$performTrade() {
+    public void fasttrading$performTrade() {
         Slot resultSlot = handler.getSlot(2);
         if (!resultSlot.getStack().isEmpty())
             onMouseClick(resultSlot, -1, 0, SlotActionType.QUICK_MOVE);
     }
 
     @Override
-    public void speedtrading$clearSellSlots() {
+    public void fasttrading$clearSellSlots() {
         onMouseClick(null, 0, 0, SlotActionType.QUICK_MOVE);
         onMouseClick(null, 1, 0, SlotActionType.QUICK_MOVE);
     }

@@ -1,8 +1,8 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "adudecalledleo.speedtrading.mixin",
-  "compatibilityLevel": "JAVA_16",
+  "package": "io.bendy1234.fasttrading.mixin",
+  "compatibilityLevel": "JAVA_21",
   "client": [
     "HandledScreenAccessor",
     "KeyBindingAccessor",

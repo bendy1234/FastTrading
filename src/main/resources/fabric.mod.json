@@ -13,18 +13,18 @@
     "issues": "https://github.com/bendy1234/FastTrading/issues"
   },
   "license": "MIT",
-  "icon": "assets/speedtrading/icon.png",
+  "icon": "assets/fasttrading/icon.png",
   "environment": "client",
   "entrypoints": {
     "client": [
-      "adudecalledleo.speedtrading.SpeedTrading"
+      "io.bendy1234.fasttrading.FastTrading"
     ],
     "modmenu": [
-      "adudecalledleo.speedtrading.compat.ModMenuSupport"
+      "io.bendy1234.fasttrading.compat.ModMenuSupport"
     ]
   },
   "mixins": [
-    "speedtrading.mixins.json"
+    "fasttrading.mixins.json"
   ],
   "accessWidener": "fasttrading.accesswidener",
   "depends": {

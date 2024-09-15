@@ -1,4 +1,4 @@
-package adudecalledleo.speedtrading.util;
+package io.bendy1234.fasttrading.util;
 
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;

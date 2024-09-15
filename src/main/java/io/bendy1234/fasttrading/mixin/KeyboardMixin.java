@@ -1,6 +1,6 @@
-package adudecalledleo.speedtrading.mixin;
+package io.bendy1234.fasttrading.mixin;
 
-import adudecalledleo.speedtrading.ModKeyBindings;
+import io.bendy1234.fasttrading.ModKeyBindings;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.widget.TextFieldWidget;

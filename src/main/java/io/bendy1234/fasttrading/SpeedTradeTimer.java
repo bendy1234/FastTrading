@@ -1,6 +1,6 @@
-package adudecalledleo.speedtrading;
+package io.bendy1234.fasttrading;
 
-import adudecalledleo.speedtrading.config.ModConfig;
+import io.bendy1234.fasttrading.config.ModConfig;
 import net.minecraft.client.world.ClientWorld;
 
 public class SpeedTradeTimer {
@@ -11,7 +11,7 @@ public class SpeedTradeTimer {
     }
 
     public static int getCounterMax() {
-        return ModConfig.get().ticksBetweenActions;
+        return ModConfig.ticksBetweenActions;
     }
 
     public static boolean doAction() {
