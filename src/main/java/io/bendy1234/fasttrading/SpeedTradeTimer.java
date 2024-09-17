@@ -4,23 +4,28 @@ import io.bendy1234.fasttrading.config.ModConfig;
 import net.minecraft.client.world.ClientWorld;
 
 public class SpeedTradeTimer {
-    private static int counter;
+    private static boolean active;
+    public static double counter;
 
-    public static void reset() {
+    public static void start() {
+        active = true;
         counter = 0;
     }
 
-    public static int getCounterMax() {
-        return ModConfig.ticksBetweenActions;
+    public static void stop() {
+        active = false;
     }
 
-    public static boolean doAction() {
-        return counter == getCounterMax();
+    public static boolean shouldDoAction() {
+        return counter > 1;
+    }
+
+    public static void onDoAction() {
+        counter--;
     }
 
     public static void onClientWorldTick(ClientWorld world) {
-        counter++;
-        if (counter > getCounterMax())
-            reset();
+        if (active)
+            counter += 1 / ModConfig.ticksBetweenActions;
     }
 }

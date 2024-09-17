@@ -46,7 +46,7 @@ public class SpeedTradeButton extends PressableWidget {
     public void onPress() {
         if (checkPrimed()) {
             phase = Phase.AUTOFILL;
-            SpeedTradeTimer.reset();
+            SpeedTradeTimer.start();
         }
     }
 
@@ -54,6 +54,7 @@ public class SpeedTradeButton extends PressableWidget {
         if (hooks.fasttrading$computeState() != MerchantScreenHooks.State.CAN_PERFORM) {
             phase = Phase.INACTIVE;
             hooks.fasttrading$clearSellSlots();
+            SpeedTradeTimer.stop();
             return false;
         }
         return true;
@@ -65,19 +66,21 @@ public class SpeedTradeButton extends PressableWidget {
             return;
         }
         active = false;
-        if (!SpeedTradeTimer.doAction() || !checkState())
-            return;
 
-        switch (phase) {
-            case Phase.AUTOFILL:
+        while (SpeedTradeTimer.shouldDoAction()) {
+            if (!checkState())
+                return;
+
+            SpeedTradeTimer.onDoAction();
+
+            if (phase == Phase.AUTOFILL) {
                 hooks.fasttrading$autofillSellSlots();
                 phase = Phase.TRADE;
-                break;
-            case Phase.TRADE:
+            }
+            else {
                 hooks.fasttrading$performTrade();
-            default:
                 phase = Phase.AUTOFILL;
-                break;
+            }
         }
         checkState();
     }
