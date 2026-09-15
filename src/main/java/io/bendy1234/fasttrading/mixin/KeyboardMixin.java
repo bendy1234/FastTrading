@@ -13,8 +13,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.lwjgl.glfw.GLFW.GLFW_RELEASE;
-
 @Mixin(KeyboardHandler.class)
 public abstract class KeyboardMixin {
     @Shadow
@@ -42,7 +40,7 @@ public abstract class KeyboardMixin {
             }
             if (targetBinding == null)
                 return;
-            if (action == GLFW_RELEASE)
+            if (action == 0) // mc code also uses 0 for key up
                 targetBinding.setDown(false);
             else {
                 targetBinding.setDown(true);
