@@ -7,6 +7,8 @@ public interface MerchantScreenHooks {
 
     MerchantOffer fasttrading$getCurrentTradeOffer();
 
+    int fasttrading$getCurrentTradeOfferIndex();
+
     boolean fasttrading$isCurrentTradeOfferBlocked();
 
     void fasttrading$autofillSellSlots();

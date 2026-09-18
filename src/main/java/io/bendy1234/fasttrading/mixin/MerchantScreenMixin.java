@@ -76,6 +76,11 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
     }
 
     @Override
+    public int fasttrading$getCurrentTradeOfferIndex() {
+        return shopItem;
+    }
+
+    @Override
     public boolean fasttrading$isCurrentTradeOfferBlocked() {
         MerchantOffer offer = fasttrading$getCurrentTradeOffer();
         if (offer == null)
@@ -86,7 +91,7 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
     @Override
     public void fasttrading$autofillSellSlots() {
         switch (ModConfig.autofillBehavior) {
-            case DEFAULT -> postButtonClick();
+            case DEFAULT -> menu.tryMoveItems(shopItem);
             case STRICT -> {
                 fasttrading$clearSellSlots();
                 MerchantOffer recipe = menu.getOffers().get(shopItem);
