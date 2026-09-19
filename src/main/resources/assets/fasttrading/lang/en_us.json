@@ -28,5 +28,9 @@
   "fasttrading.midnightconfig.tradeBlockBehavior.tooltip": "Controls when to not allow speed trading.",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.DAMAGEABLE": "Result is Damageable",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.UNSTACKABLE": "Result is Unstackable",
-  "fasttrading.midnightconfig.enum.TradeBlockBehavior.DISABLED": "Disabled"
+  "fasttrading.midnightconfig.enum.TradeBlockBehavior.DISABLED": "Disabled",
+  "fasttrading.midnightconfig.stopOnPriceChange": "Stop when Price Changes",
+  "fasttrading.midnightconfig.stopOnPriceChange.tooltip": "Stop repeat trading if either payment cost changes.",
+  "fasttrading.midnightconfig.stopOnNewOffers": "Stop when New Offers Appear",
+  "fasttrading.midnightconfig.stopOnNewOffers.tooltip": "Stop repeat trading when villager leveling adds new offers."
 }

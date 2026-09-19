@@ -37,6 +37,9 @@ public class SpeedTradeButton extends AbstractButton {
     private final MerchantScreenHooks hooks;
     private Phase phase;
     private int actionTradeOfferIndex;
+    private int actionTradeOfferCount;
+    private ItemStack actionTradeCostA = ItemStack.EMPTY;
+    private ItemStack actionTradeCostB = ItemStack.EMPTY;
 
     public SpeedTradeButton(int x, int y, MerchantScreenHooks hooks) {
         super(x, y, 18, 20, Component.empty());
@@ -56,6 +59,13 @@ public class SpeedTradeButton extends AbstractButton {
         if (checkPrimed()) {
             phase = Phase.AUTOFILL;
             actionTradeOfferIndex = hooks.fasttrading$getCurrentTradeOfferIndex();
+            if (ModConfig.stopOnPriceChange) {
+                MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
+                actionTradeCostA = offer.getCostA().copy();
+                actionTradeCostB = offer.getCostB().copy();
+            }
+            if (ModConfig.stopOnNewOffers)
+                actionTradeOfferCount = hooks.fasttrading$getTradeOfferCount();
             SpeedTradeTimer.start();
         }
     }
@@ -64,8 +74,16 @@ public class SpeedTradeButton extends AbstractButton {
     private boolean checkState() {
         MerchantScreenHooks.State state = hooks.fasttrading$computeState();
         boolean canContinue = state == MerchantScreenHooks.State.CAN_PERFORM
-                || phase == Phase.AUTOFILL && state == MerchantScreenHooks.State.NO_ROOM_FOR_SELL_ITEM;
-        if (!canContinue || actionTradeOfferIndex != hooks.fasttrading$getCurrentTradeOfferIndex()) {
+                || phase == Phase.AUTOFILL
+                && state == MerchantScreenHooks.State.NO_ROOM_FOR_SELL_ITEM
+                && hooks.fasttrading$canAutofillMakeRoom();
+        MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
+        if (!canContinue
+                || actionTradeOfferIndex != hooks.fasttrading$getCurrentTradeOfferIndex()
+                || ModConfig.stopOnPriceChange
+                && (!ItemStack.matches(actionTradeCostA, offer.getCostA())
+                || !ItemStack.matches(actionTradeCostB, offer.getCostB()))
+                || ModConfig.stopOnNewOffers && actionTradeOfferCount != hooks.fasttrading$getTradeOfferCount()) {
             phase = Phase.INACTIVE;
             hooks.fasttrading$clearSellSlots();
             SpeedTradeTimer.stop();
