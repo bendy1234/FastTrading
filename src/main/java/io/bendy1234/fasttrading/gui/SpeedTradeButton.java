@@ -36,10 +36,8 @@ public class SpeedTradeButton extends AbstractButton {
     private static final Style STYLE_GRAY = Style.EMPTY.withColor(ChatFormatting.GRAY);
     private final MerchantScreenHooks hooks;
     private Phase phase;
-    private int actionTradeOfferIndex;
-    private int actionTradeOfferCount;
-    private ItemStack actionTradeCostA = ItemStack.EMPTY;
-    private ItemStack actionTradeCostB = ItemStack.EMPTY;
+    private int tradeOfferIndexAtStart;
+    private int tradeOfferCountAtStart;
 
     public SpeedTradeButton(int x, int y, MerchantScreenHooks hooks) {
         super(x, y, 18, 20, Component.empty());
@@ -58,14 +56,9 @@ public class SpeedTradeButton extends AbstractButton {
     public void onPress(InputWithModifiers input) {
         if (checkPrimed()) {
             phase = Phase.AUTOFILL;
-            actionTradeOfferIndex = hooks.fasttrading$getCurrentTradeOfferIndex();
-            if (ModConfig.stopOnPriceChange) {
-                MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
-                actionTradeCostA = offer.getCostA().copy();
-                actionTradeCostB = offer.getCostB().copy();
-            }
+            tradeOfferIndexAtStart = hooks.fasttrading$getCurrentTradeOfferIndex();
             if (ModConfig.stopOnNewOffers)
-                actionTradeOfferCount = hooks.fasttrading$getTradeOfferCount();
+                tradeOfferCountAtStart = hooks.fasttrading$getTradeOfferCount();
             SpeedTradeTimer.start();
         }
     }
@@ -79,11 +72,9 @@ public class SpeedTradeButton extends AbstractButton {
                 && hooks.fasttrading$canAutofillMakeRoom();
         MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
         if (!canContinue
-                || actionTradeOfferIndex != hooks.fasttrading$getCurrentTradeOfferIndex()
-                || ModConfig.stopOnPriceChange
-                && (!ItemStack.matches(actionTradeCostA, offer.getCostA())
-                || !ItemStack.matches(actionTradeCostB, offer.getCostB()))
-                || ModConfig.stopOnNewOffers && actionTradeOfferCount != hooks.fasttrading$getTradeOfferCount()) {
+                || tradeOfferIndexAtStart != hooks.fasttrading$getCurrentTradeOfferIndex()
+                || ModConfig.stopOnPriceChange && !ItemStack.matches(offer.getBaseCostA(), offer.getCostA())
+                || ModConfig.stopOnNewOffers && tradeOfferCountAtStart != hooks.fasttrading$getTradeOfferCount()) {
             phase = Phase.INACTIVE;
             hooks.fasttrading$clearSellSlots();
             SpeedTradeTimer.stop();

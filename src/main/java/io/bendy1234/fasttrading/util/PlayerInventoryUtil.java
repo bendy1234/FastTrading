@@ -57,9 +57,8 @@ public class PlayerInventoryUtil {
 
         ItemStack paymentA = slot0.copy();
         ItemStack paymentB = slot1.copy();
-        boolean backwards = ModConfig.autofillBehavior == AutofillBehavior.DEFAULT;
-        if (!paymentA.isEmpty() && !moveToInventory(simulatedInventory, paymentA, backwards)
-                || !paymentB.isEmpty() && !moveToInventory(simulatedInventory, paymentB, backwards)) {
+        if (!paymentA.isEmpty() && !moveToInventory(simulatedInventory, paymentA)
+                || !paymentB.isEmpty() && !moveToInventory(simulatedInventory, paymentB)) {
             return false;
         }
 
@@ -90,14 +89,11 @@ public class PlayerInventoryUtil {
         return false;
     }
 
-    private static boolean moveToInventory(List<ItemStack> inventory, ItemStack stack, boolean backwards) {
+    private static boolean moveToInventory(List<ItemStack> inventory, ItemStack stack) {
         boolean moved = false;
-        int start = backwards ? inventory.size() - 1 : 0;
-        int end = backwards ? -1 : inventory.size();
-        int step = backwards ? -1 : 1;
 
         if (stack.isStackable()) {
-            for (int i = start; i != end && !stack.isEmpty(); i += step) {
+            for (int i = 0; i < inventory.size() && !stack.isEmpty(); i++) {
                 ItemStack inventoryStack = inventory.get(i);
                 if (ItemStack.isSameItemSameComponents(stack, inventoryStack)) {
                     int count = Math.min(stack.getCount(), inventoryStack.getMaxStackSize() - inventoryStack.getCount());
@@ -111,7 +107,7 @@ public class PlayerInventoryUtil {
         }
 
         if (!stack.isEmpty()) {
-            for (int i = start; i != end; i += step) {
+            for (int i = 0; i < inventory.size(); i++) {
                 if (inventory.get(i).isEmpty()) {
                     inventory.set(i, stack.copy());
                     stack.setCount(0);

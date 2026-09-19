@@ -113,7 +113,7 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
     @Override
     public void fasttrading$autofillSellSlots() {
         switch (ModConfig.autofillBehavior) {
-            case DEFAULT -> menu.tryMoveItems(shopItem);
+            case DEFAULT -> postButtonClick();
             case STRICT -> {
                 fasttrading$clearSellSlots();
                 MerchantOffer recipe = menu.getOffers().get(shopItem);
