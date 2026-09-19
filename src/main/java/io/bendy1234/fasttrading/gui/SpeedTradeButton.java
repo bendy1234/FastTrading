@@ -38,6 +38,7 @@ public class SpeedTradeButton extends AbstractButton {
     private Phase phase;
     private int tradeOfferIndexAtStart;
     private int tradeOfferCountAtStart;
+    private int tradeCostACountAtStart;
 
     public SpeedTradeButton(int x, int y, MerchantScreenHooks hooks) {
         super(x, y, 18, 20, Component.empty());
@@ -57,6 +58,8 @@ public class SpeedTradeButton extends AbstractButton {
         if (checkPrimed()) {
             phase = Phase.AUTOFILL;
             tradeOfferIndexAtStart = hooks.fasttrading$getCurrentTradeOfferIndex();
+            if (ModConfig.stopOnPriceChange)
+                tradeCostACountAtStart = hooks.fasttrading$getCurrentTradeOffer().getCostA().getCount();
             if (ModConfig.stopOnNewOffers)
                 tradeOfferCountAtStart = hooks.fasttrading$getTradeOfferCount();
             SpeedTradeTimer.start();
@@ -73,7 +76,7 @@ public class SpeedTradeButton extends AbstractButton {
         MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
         if (!canContinue
                 || tradeOfferIndexAtStart != hooks.fasttrading$getCurrentTradeOfferIndex()
-                || ModConfig.stopOnPriceChange && !ItemStack.matches(offer.getBaseCostA(), offer.getCostA())
+                || ModConfig.stopOnPriceChange && tradeCostACountAtStart != offer.getCostA().getCount()
                 || ModConfig.stopOnNewOffers && tradeOfferCountAtStart != hooks.fasttrading$getTradeOfferCount()) {
             phase = Phase.INACTIVE;
             hooks.fasttrading$clearSellSlots();
