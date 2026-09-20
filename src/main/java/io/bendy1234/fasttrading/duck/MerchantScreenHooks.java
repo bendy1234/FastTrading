@@ -13,8 +13,6 @@ public interface MerchantScreenHooks {
 
     boolean fasttrading$isCurrentTradeOfferBlocked();
 
-    boolean fasttrading$canAutofillMakeRoom();
-
     void fasttrading$autofillSellSlots();
 
     void fasttrading$performTrade();

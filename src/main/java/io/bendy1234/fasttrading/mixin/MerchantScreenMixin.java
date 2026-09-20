@@ -20,11 +20,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.playerCanAcceptStack;
-import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.playerCanAcceptStackAfterAutofill;
 import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.playerCanPerformTrade;
 
 @Mixin(MerchantScreen.class)
@@ -95,19 +91,6 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
         if (offer == null)
             return false;
         return ModConfig.tradeBlockBehavior.isBlocked(offer.getResult());
-    }
-
-    @Override
-    public boolean fasttrading$canAutofillMakeRoom() {
-        MerchantOffer offer = fasttrading$getCurrentTradeOffer();
-        if (offer == null)
-            return false;
-
-        List<ItemStack> inventory = new ArrayList<>(36);
-        for (int i = 3; i < 39; i++) {
-            inventory.add(menu.getSlot(i).getItem());
-        }
-        return playerCanAcceptStackAfterAutofill(inventory, menu.getSlot(0).getItem(), menu.getSlot(1).getItem(), offer);
     }
 
     @Override

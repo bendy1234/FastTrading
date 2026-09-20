@@ -69,10 +69,7 @@ public class SpeedTradeButton extends AbstractButton {
     //checks if the player still has items to trade and if he didn't change trade
     private boolean checkState() {
         MerchantScreenHooks.State state = hooks.fasttrading$computeState();
-        boolean canContinue = state == MerchantScreenHooks.State.CAN_PERFORM
-                || phase == Phase.AUTOFILL
-                && state == MerchantScreenHooks.State.NO_ROOM_FOR_SELL_ITEM
-                && hooks.fasttrading$canAutofillMakeRoom();
+        boolean canContinue = state == MerchantScreenHooks.State.CAN_PERFORM;
         MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
         if (!canContinue
                 || tradeOfferIndexAtStart != hooks.fasttrading$getCurrentTradeOfferIndex()
