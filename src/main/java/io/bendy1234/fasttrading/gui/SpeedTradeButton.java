@@ -36,7 +36,9 @@ public class SpeedTradeButton extends AbstractButton {
     private static final Style STYLE_GRAY = Style.EMPTY.withColor(ChatFormatting.GRAY);
     private final MerchantScreenHooks hooks;
     private Phase phase;
-    private MerchantOffer actionTradeOffer;
+    private int tradeOfferIndexAtStart;
+    private int tradeOfferCountAtStart;
+    private int tradeCostACountAtStart;
 
     public SpeedTradeButton(int x, int y, MerchantScreenHooks hooks) {
         super(x, y, 18, 20, Component.empty());
@@ -55,14 +57,24 @@ public class SpeedTradeButton extends AbstractButton {
     public void onPress(InputWithModifiers input) {
         if (checkPrimed()) {
             phase = Phase.AUTOFILL;
-            actionTradeOffer = hooks.fasttrading$getCurrentTradeOffer();
+            tradeOfferIndexAtStart = hooks.fasttrading$getCurrentTradeOfferIndex();
+            if (ModConfig.stopOnPriceChange)
+                tradeCostACountAtStart = hooks.fasttrading$getCurrentTradeOffer().getCostA().getCount();
+            if (ModConfig.stopOnNewOffers)
+                tradeOfferCountAtStart = hooks.fasttrading$getTradeOfferCount();
             SpeedTradeTimer.start();
         }
     }
 
     //checks if the player still has items to trade and if he didn't change trade
     private boolean checkState() {
-        if (hooks.fasttrading$computeState() != MerchantScreenHooks.State.CAN_PERFORM || actionTradeOffer != hooks.fasttrading$getCurrentTradeOffer()) {
+        MerchantScreenHooks.State state = hooks.fasttrading$computeState();
+        boolean canContinue = state == MerchantScreenHooks.State.CAN_PERFORM;
+        MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
+        if (!canContinue
+                || tradeOfferIndexAtStart != hooks.fasttrading$getCurrentTradeOfferIndex()
+                || ModConfig.stopOnPriceChange && tradeCostACountAtStart != offer.getCostA().getCount()
+                || ModConfig.stopOnNewOffers && tradeOfferCountAtStart != hooks.fasttrading$getTradeOfferCount()) {
             phase = Phase.INACTIVE;
             hooks.fasttrading$clearSellSlots();
             SpeedTradeTimer.stop();

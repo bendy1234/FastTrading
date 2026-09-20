@@ -9,4 +9,8 @@ public class ModConfig extends MidnightConfig {
     public static AutofillBehavior autofillBehavior = AutofillBehavior.DEFAULT;
     @Entry
     public static TradeBlockBehavior tradeBlockBehavior = TradeBlockBehavior.DAMAGEABLE;
+    @Entry
+    public static boolean stopOnPriceChange = true;
+    @Entry
+    public static boolean stopOnNewOffers = true;
 }

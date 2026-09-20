@@ -76,6 +76,16 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
     }
 
     @Override
+    public int fasttrading$getCurrentTradeOfferIndex() {
+        return shopItem;
+    }
+
+    @Override
+    public int fasttrading$getTradeOfferCount() {
+        return menu.getOffers().size();
+    }
+
+    @Override
     public boolean fasttrading$isCurrentTradeOfferBlocked() {
         MerchantOffer offer = fasttrading$getCurrentTradeOffer();
         if (offer == null)
