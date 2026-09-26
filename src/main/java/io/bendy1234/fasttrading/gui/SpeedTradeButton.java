@@ -35,15 +35,14 @@ public class SpeedTradeButton extends AbstractButton {
     private static final Identifier BUTTON_LOCATION = FastTrading.id("textures/gui/fasttrading.png");
     private static final Style STYLE_GRAY = Style.EMPTY.withColor(ChatFormatting.GRAY);
     private final MerchantScreenHooks hooks;
-    private Phase phase;
-    private int tradeOfferIndexAtStart;
-    private int tradeOfferCountAtStart;
-    private int tradeCostACountAtStart;
+    private Phase phase = Phase.INACTIVE;
+    private int tradeCost;
+    private int offerCount;
+    private int offerIdx;
 
     public SpeedTradeButton(int x, int y, MerchantScreenHooks hooks) {
         super(x, y, 18, 20, Component.empty());
         this.hooks = hooks;
-        phase = Phase.INACTIVE;
     }
 
     private boolean checkPrimed() {
@@ -57,15 +56,15 @@ public class SpeedTradeButton extends AbstractButton {
     public void onPress(InputWithModifiers input) {
         if (checkPrimed()) {
             phase = Phase.AUTOFILL;
-            tradeOfferIndexAtStart = hooks.fasttrading$getCurrentTradeOfferIndex();
-            tradeCostACountAtStart = hooks.fasttrading$getCurrentTradeOffer().getCostA().getCount();
-            tradeOfferCountAtStart = hooks.fasttrading$getTradeOfferCount();
+            tradeCost = hooks.fasttrading$getCurrentTradeOffer().getCostA().getCount();
+            offerCount = hooks.fasttrading$getTradeOfferCount();
+            offerIdx = hooks.fasttrading$getCurrentTradeOfferIndex();
 
             SpeedTradeTimer.start();
         }
     }
 
-    //checks if the player still has items to trade and if he didn't change trade
+    // check if can / should trade
     private boolean checkState() {
         MerchantScreenHooks.State state = hooks.fasttrading$computeState();
         boolean canContinue = state == MerchantScreenHooks.State.CAN_PERFORM;
@@ -81,12 +80,13 @@ public class SpeedTradeButton extends AbstractButton {
 
     private boolean shouldStop() {
         MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
-        return tradeOfferIndexAtStart != hooks.fasttrading$getCurrentTradeOfferIndex()
-            || ModConfig.priceChangeStopBehavior.shouldStop(tradeCostACountAtStart, offer.getCostA().getCount())
-            || (ModConfig.stopOnNewOffers && tradeOfferCountAtStart != hooks.fasttrading$getTradeOfferCount());
+        return offerIdx != hooks.fasttrading$getCurrentTradeOfferIndex()
+            || ModConfig.priceChangeStopBehavior.shouldStop(tradeCost, offer.getCostA().getCount())
+            || (ModConfig.stopOnNewOffers && offerCount != hooks.fasttrading$getTradeOfferCount());
     }
 
     public void tick() {
+        SpeedTradeTimer.tick();
         if (phase == Phase.INACTIVE) {
             checkPrimed();
             return;
@@ -197,17 +197,17 @@ public class SpeedTradeButton extends AbstractButton {
     private void appendTradeDescription(MerchantOffer offer, ArrayList<FormattedCharSequence> destList) {
         if (offer == null)
             return;
-        ItemStack originalFirstBuyItem = offer.getBaseCostA();
-        ItemStack adjustedFirstBuyItem = offer.getCostA();
-        ItemStack secondBuyItem = offer.getCostB();
+        ItemStack baseCostA = offer.getBaseCostA();
+        ItemStack costA = offer.getCostA();
+        ItemStack costB = offer.getCostB();
         ItemStack sellItem = offer.getResult();
         destList.add(Component.translatable("fasttrading.tooltip.current_trade.is")
                 .withStyle(style -> style.withColor(ChatFormatting.GRAY)).getVisualOrderText());
-        destList.add(createItemStackDescription(originalFirstBuyItem, adjustedFirstBuyItem)
+        destList.add(createItemStackDescription(baseCostA, costA)
                 .withStyle(STYLE_GRAY).getVisualOrderText());
-        if (!secondBuyItem.isEmpty())
+        if (!costB.isEmpty())
             destList.add(Component.translatable("fasttrading.tooltip.current_trade.and",
-                            createItemStackDescription(secondBuyItem))
+                            createItemStackDescription(costB))
                     .withStyle(STYLE_GRAY).getVisualOrderText());
         destList.add(Component.translatable("fasttrading.tooltip.current_trade.for",
                         createItemStackDescription(sellItem))
@@ -219,8 +219,7 @@ public class SpeedTradeButton extends AbstractButton {
             return createItemStackDescription(stack);
         else {
             return getItemStackName(stack)
-                    .append(Component.literal(" "))
-                    .append(Component.literal("x" + stack.getCount())
+                    .append(Component.literal(" x" + stack.getCount())
                             .withStyle(style -> style.applyFormats(ChatFormatting.STRIKETHROUGH, ChatFormatting.RED)))
                     .append(Component.literal(" x" + adjustedStack.getCount())
                             .withStyle(style -> style.applyFormats(ChatFormatting.BOLD, ChatFormatting.GREEN)));

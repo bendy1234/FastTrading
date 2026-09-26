@@ -14,7 +14,7 @@ public class PlayerInventoryUtil {
         };
     }
 
-    public static boolean playerCanPay(Inventory inventory, ItemStack slot0, ItemStack slot1, ItemCost cost) {
+    public static boolean canPay(Inventory inventory, ItemStack slot0, ItemStack slot1, ItemCost cost) {
         int count = 0;
 
         if (isValidPayment(slot0, cost)) count += slot0.getCount();
@@ -29,21 +29,21 @@ public class PlayerInventoryUtil {
         return count >= cost.count();
     }
 
-    public static boolean playerCanPay(Inventory inventory, ItemCost cost) {
-        return playerCanPay(inventory, ItemStack.EMPTY, ItemStack.EMPTY, cost);
+    public static boolean canPay(Inventory inventory, ItemCost cost) {
+        return canPay(inventory, ItemStack.EMPTY, ItemStack.EMPTY, cost);
     }
 
-    public static boolean playerCanPerformTrade(Inventory playerInventory, ItemStack slot0, ItemStack slot1, MerchantOffer offer) {
-        return playerCanPay(playerInventory, slot0, slot1, offer.getItemCostA()) && offer.getItemCostB()
-                    .map(cost -> playerCanPay(playerInventory, slot0, slot1, cost))
+    public static boolean canMakeTrade(Inventory playerInventory, ItemStack slot0, ItemStack slot1, MerchantOffer offer) {
+        return canPay(playerInventory, slot0, slot1, offer.getItemCostA()) && offer.getItemCostB()
+                    .map(cost -> canPay(playerInventory, slot0, slot1, cost))
                     .orElse(true);
     }
 
-    public static boolean playerCanPerformTrade(Inventory playerInventory, MerchantOffer offer) {
-        return playerCanPerformTrade(playerInventory, ItemStack.EMPTY, ItemStack.EMPTY, offer);
+    public static boolean canMakeTrade(Inventory playerInventory, MerchantOffer offer) {
+        return canMakeTrade(playerInventory, ItemStack.EMPTY, ItemStack.EMPTY, offer);
     }
 
-    public static boolean playerCanAcceptStack(Inventory playerInventory, ItemStack stack) {
+    public static boolean canAcceptStack(Inventory playerInventory, ItemStack stack) {
         if (stack.isEmpty())
             return false;
 

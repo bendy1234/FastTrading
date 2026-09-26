@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.playerCanAcceptStack;
-import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.playerCanPerformTrade;
+import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.canAcceptStack;
+import static io.bendy1234.fasttrading.util.PlayerInventoryUtil.canMakeTrade;
 
 @Mixin(MerchantScreen.class)
 public abstract class MerchantScreenMixin extends AbstractContainerScreen<MerchantMenu> implements MerchantScreenHooks {
@@ -60,9 +60,9 @@ public abstract class MerchantScreenMixin extends AbstractContainerScreen<Mercha
             return State.NO_SELECTION;
         if (offer.isOutOfStock())
             return State.OUT_OF_STOCK;
-        if (!playerCanAcceptStack(playerInventory, offer.getResult()))
+        if (!canAcceptStack(playerInventory, offer.getResult()))
             return State.NO_ROOM_FOR_SELL_ITEM;
-        if (playerCanPerformTrade(playerInventory, menu.getSlot(0).getItem(), menu.getSlot(1).getItem(), offer))
+        if (canMakeTrade(playerInventory, menu.getSlot(0).getItem(), menu.getSlot(1).getItem(), offer))
             return State.CAN_PERFORM;
         return State.NOT_ENOUGH_BUY_ITEMS;
     }

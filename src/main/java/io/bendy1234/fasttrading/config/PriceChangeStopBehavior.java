@@ -5,10 +5,10 @@ public enum PriceChangeStopBehavior {
     ON_CHANGE,
     DISABLED;
 
-    public boolean shouldStop(int old_price, int current) {
+    public boolean shouldStop(int oldPrice, int current) {
         return switch (this) {
-            case ON_INCREASE -> current > old_price;
-            case ON_CHANGE -> old_price != current;
+            case ON_INCREASE -> current > oldPrice;
+            case ON_CHANGE -> oldPrice != current;
             case DISABLED -> false;
         };
     }
