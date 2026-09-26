@@ -10,7 +10,7 @@ public class ModConfig extends MidnightConfig {
     @Entry
     public static TradeBlockBehavior tradeBlockBehavior = TradeBlockBehavior.DAMAGEABLE;
     @Entry
-    public static boolean stopOnPriceChange = true;
+    public static PriceChangeStopBehavior priceChangeStopBehavior = PriceChangeStopBehavior.ON_INCREASE;
     @Entry
-    public static boolean stopOnNewOffers = true;
+    public static boolean stopOnNewOffers = false;
 }

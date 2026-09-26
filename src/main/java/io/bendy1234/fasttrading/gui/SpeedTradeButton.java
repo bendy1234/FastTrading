@@ -58,10 +58,9 @@ public class SpeedTradeButton extends AbstractButton {
         if (checkPrimed()) {
             phase = Phase.AUTOFILL;
             tradeOfferIndexAtStart = hooks.fasttrading$getCurrentTradeOfferIndex();
-            if (ModConfig.stopOnPriceChange)
-                tradeCostACountAtStart = hooks.fasttrading$getCurrentTradeOffer().getCostA().getCount();
-            if (ModConfig.stopOnNewOffers)
-                tradeOfferCountAtStart = hooks.fasttrading$getTradeOfferCount();
+            tradeCostACountAtStart = hooks.fasttrading$getCurrentTradeOffer().getCostA().getCount();
+            tradeOfferCountAtStart = hooks.fasttrading$getTradeOfferCount();
+
             SpeedTradeTimer.start();
         }
     }
@@ -70,17 +69,21 @@ public class SpeedTradeButton extends AbstractButton {
     private boolean checkState() {
         MerchantScreenHooks.State state = hooks.fasttrading$computeState();
         boolean canContinue = state == MerchantScreenHooks.State.CAN_PERFORM;
-        MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
-        if (!canContinue
-                || tradeOfferIndexAtStart != hooks.fasttrading$getCurrentTradeOfferIndex()
-                || ModConfig.stopOnPriceChange && tradeCostACountAtStart != offer.getCostA().getCount()
-                || ModConfig.stopOnNewOffers && tradeOfferCountAtStart != hooks.fasttrading$getTradeOfferCount()) {
+
+        if (!canContinue || shouldStop()) {
             phase = Phase.INACTIVE;
             hooks.fasttrading$clearSellSlots();
             SpeedTradeTimer.stop();
             return false;
         }
         return true;
+    }
+
+    private boolean shouldStop() {
+        MerchantOffer offer = hooks.fasttrading$getCurrentTradeOffer();
+        return tradeOfferIndexAtStart != hooks.fasttrading$getCurrentTradeOfferIndex()
+            || ModConfig.priceChangeStopBehavior.shouldStop(tradeCostACountAtStart, offer.getCostA().getCount())
+            || (ModConfig.stopOnNewOffers && tradeOfferCountAtStart != hooks.fasttrading$getTradeOfferCount());
     }
 
     public void tick() {
@@ -236,6 +239,6 @@ public class SpeedTradeButton extends AbstractButton {
     public enum Phase {
         INACTIVE,
         AUTOFILL,
-        TRADE
+        TRADE,
     }
 }
