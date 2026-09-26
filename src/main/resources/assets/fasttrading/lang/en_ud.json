@@ -1,0 +1,52 @@
+{
+  "fasttrading.tooltip.can_perform": "ǝpɐɹʇ pǝǝds oʇ ʞɔᴉꞁƆ",
+  "fasttrading.tooltip.cannot_perform": "¡ǝpɐɹʇ pǝǝds ʇ,uɐƆ",
+  "fasttrading.tooltip.closed": "(¡¿sᴉɥʇ ᵷuᴉpɐǝɹ uǝʌǝ noʎ ǝɹɐ ʍoɥ) ¡pǝsoꞁɔ sᴉ uǝǝɹɔS",
+  "fasttrading.tooltip.no_selection": "¡ǝpɐɹʇ ɐ ʇɔǝꞁǝS",
+  "fasttrading.tooltip.out_of_stock": "¡ʞɔoʇs ɟo ʇnO",
+  "fasttrading.tooltip.not_enough_buy_items": "¡ǝpɐɹʇ ɹoɟ sɯǝʇᴉ ʇuǝᴉɔᴉɟɟnsuI",
+  "fasttrading.tooltip.strict_autofill_config_hint": "ʎꞁʇɔɐxǝ ɥɔʇɐɯ ʇou op sɯǝʇI",
+  "fasttrading.tooltip.no_room_for_sell_item": "¡ʇꞁnsǝɹ ǝpɐɹʇ ɹoɟ ɯooɹ oN",
+  "fasttrading.tooltip.blocked": "¡uoᴉʇɐɹnᵷᴉɟuoɔ ɹnoʎ oʇ ǝnp pǝʞɔoꞁᗺ",
+  "fasttrading.tooltip.in_progress": "˙˙˙pꞁoɥ ǝsɐǝꞁd ‘ᵷuᴉpɐɹ⟘",
+
+  "fasttrading.tooltip.unblock_hint": "ʞɔoꞁq ǝpᴉɹɹǝʌo oʇ %s pꞁoH",
+  "fasttrading.tooltip.unblock_hint.unbound[0]": "ʎǝʞ ɐ oʇ %s puᴉᗺ",
+  "fasttrading.tooltip.unblock_hint.unbound[1]": "ʞɔoꞁq ǝpᴉɹɹǝʌo oʇ",
+  "fasttrading.tooltip.can_perform.unblock_hint": "(ʞɔoꞁq ᵷuᴉpᴉɹɹǝʌo)",
+
+  "fasttrading.tooltip.current_trade.is": ":sᴉ ǝpɐɹʇ ʇuǝɹɹnƆ",
+  "fasttrading.tooltip.current_trade.and": "%s puɐ",
+  "fasttrading.tooltip.current_trade.for": "%s ɹoɟ",
+
+  "fasttrading.midnightconfig.title": "ᵷᴉɟuoƆ ᵷuᴉpɐɹ⟘ ʇsɐℲ",
+
+  "fasttrading.midnightconfig.ticksBetweenActions": "suoᴉʇɔⱯ uǝǝʍʇǝᗺ sʞɔᴉ⟘",
+  "fasttrading.midnightconfig.ticksBetweenActions.tooltip": "puoɔǝs ⥝ oʇ ʇuǝꞁɐʌᴉnbǝ ǝɹɐ sʞɔᴉʇ 0ᘔ\nuoᴉʇɔɐ ꞁꞁᴉɟǝɹ\\ǝpɐɹʇ ɥɔɐǝ uǝǝʍʇǝq ʎɐꞁǝᗡ",
+
+  "fasttrading.midnightconfig.autofillBehavior": "ɹoᴉʌɐɥǝᗺ ꞁꞁᴉɟoʇnⱯ",
+  "fasttrading.midnightconfig.autofillBehavior.tooltip": "ʎꞁʇɔɐxǝ sɯǝʇᴉ ɥɔʇɐɯ :ʇɔᴉɹʇS\nɹoᴉʌɐɥǝq ꞁꞁᴉɟoʇnɐ ꞁɐɯɹou :ɐꞁꞁᴉuɐɅ\nsǝpɐɹʇ ɹoɟ sʇoꞁs ǝɥʇ uᴉ ꞁꞁᴉɟ oʇ ʍoH",
+  "fasttrading.midnightconfig.enum.AutofillBehavior.DEFAULT": "ɐꞁꞁᴉuɐɅ",
+  "fasttrading.midnightconfig.enum.AutofillBehavior.STRICT": "ʇɔᴉɹʇS",
+
+  "fasttrading.midnightconfig.tradeBlockBehavior": "ʞɔoꞁᗺ ǝpɐɹ⟘ pǝǝdS",
+  "fasttrading.midnightconfig.tradeBlockBehavior.tooltip": "ᵷuᴉpɐɹʇ ʍoꞁꞁɐsᴉp oʇ uǝɥM",
+  "fasttrading.midnightconfig.enum.TradeBlockBehavior.DAMAGEABLE": "ǝꞁqɐǝᵷɐɯɐᗡ sᴉ ʇꞁnsǝᴚ",
+  "fasttrading.midnightconfig.enum.TradeBlockBehavior.UNSTACKABLE": "ǝꞁqɐʞɔɐʇsu∩ sᴉ ʇꞁnsǝᴚ",
+  "fasttrading.midnightconfig.enum.TradeBlockBehavior.DISABLED": "ʍoꞁꞁⱯ",
+
+  "fasttrading.midnightconfig.priceChangeStopBehavior": "ǝᵷuɐɥƆ ǝɔᴉɹԀ uo doʇS",
+  "fasttrading.midnightconfig.priceChangeStopBehavior.tooltip": "sǝᵷuɐɥɔ ǝɔᴉɹd ǝɥʇ ɹǝʌǝuǝɥʍ ᵷuᴉpɐɹʇ doʇS",
+  "fasttrading.midnightconfig.enum.PriceChangeStopBehavior.ON_INCREASE": "ǝsɐǝɹɔuI uO",
+  "fasttrading.midnightconfig.enum.PriceChangeStopBehavior.ON_CHANGE": "ǝᵷuɐɥƆ uO",
+  "fasttrading.midnightconfig.enum.PriceChangeStopBehavior.DISABLED": "ɹǝʌǝN",
+
+  "fasttrading.midnightconfig.stopOnNewOffers": "sɹǝɟɟo ʍǝu uo doʇS",
+  "fasttrading.midnightconfig.stopOnNewOffers.tooltip": "ɹɐǝddɐ sɹǝɟɟo ǝpɐɹʇ ʍǝu uǝɥʍ ᵷuᴉpɐɹʇ doʇS",
+
+  "key.fasttrading.overrideBlock": "ʞɔoꞁᗺ ǝpɐɹ⟘ ǝpᴉɹɹǝʌO",
+
+  "modmenu.nameTranslation.fasttrading": "ᵷuᴉpɐɹ⟘ ʇsɐℲ",
+  "modmenu.summaryTranslation.fasttrading": "˙(uᴉɐᵷɐ) ǝꞁqɐꞁᴉɐʌɐ ɹǝᵷuoꞁ ou s,ʇᴉ ꞁᴉʇun ǝpɐɹʇ ʇuǝɹɹnɔ ǝɥʇ ʇɐǝdǝɹ oʇ I∩⅁ ᵷuᴉpɐɹʇ ɹǝᵷɐꞁꞁᴉʌ ǝɥʇ oʇ uoʇʇnq ɐ sppⱯ",
+  "modmenu.descriptionTranslation.fasttrading": "˙(uᴉɐᵷɐ) ǝꞁqɐꞁᴉɐʌɐ ɹǝᵷuoꞁ ou s,ʇᴉ ꞁᴉʇun ǝpɐɹʇ ʇuǝɹɹnɔ ǝɥʇ ʇɐǝdǝɹ oʇ I∩⅁ ᵷuᴉpɐɹʇ ɹǝᵷɐꞁꞁᴉʌ ǝɥʇ oʇ uoʇʇnq ɐ sppⱯ"
+}
