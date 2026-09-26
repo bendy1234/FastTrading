@@ -29,10 +29,6 @@
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.DAMAGEABLE": "Результат может быть повреждён",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.UNSTACKABLE": "Результат нельзя сложить",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.DISABLED": "Отключено",
-  "fasttrading.midnightconfig.stopOnPriceChange": "Остановить при изменении цены",
-  "fasttrading.midnightconfig.stopOnPriceChange.tooltip": "Остановить повторную торговлю, если изменится стоимость любого из предметов оплаты.",
-  "fasttrading.midnightconfig.stopOnNewOffers": "Остановить при появлении новых предложений",
-  "fasttrading.midnightconfig.stopOnNewOffers.tooltip": "Остановить повторную торговлю, когда повышение уровня жителя добавит новые предложения.",
 
   "modmenu.summaryTranslation.fasttrading": "Добавляет в интерфейс торговли с жителями кнопку, позволяющую повторять текущую сделку до тех пор, пока она не станет недоступной (снова).",
   "modmenu.descriptionTranslation.fasttrading": "Добавляет в интерфейс торговли с жителями кнопку, позволяющую повторять текущую сделку до тех пор, пока она не станет недоступной (снова)."

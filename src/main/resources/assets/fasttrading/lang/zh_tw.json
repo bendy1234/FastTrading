@@ -27,9 +27,5 @@
   "fasttrading.midnightconfig.tradeBlockBehavior.tooltip": "控制何時不允許快速交易。",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.DAMAGEABLE": "結果可損壞",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.UNSTACKABLE": "結果不可堆疊",
-  "fasttrading.midnightconfig.enum.TradeBlockBehavior.DISABLED": "停用",
-  "fasttrading.midnightconfig.stopOnPriceChange": "價格變更時停止",
-  "fasttrading.midnightconfig.stopOnPriceChange.tooltip": "任一付款物品的成本變更時停止重複交易。",
-  "fasttrading.midnightconfig.stopOnNewOffers": "出現新交易時停止",
-  "fasttrading.midnightconfig.stopOnNewOffers.tooltip": "村民升級並新增交易時停止重複交易。"
+  "fasttrading.midnightconfig.enum.TradeBlockBehavior.DISABLED": "停用"
 }
