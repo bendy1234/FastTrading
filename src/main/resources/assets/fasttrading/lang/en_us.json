@@ -8,32 +8,41 @@
   "fasttrading.tooltip.strict_autofill_config_hint": "Items do not match exactly",
   "fasttrading.tooltip.no_room_for_sell_item": "No room for trade result!",
   "fasttrading.tooltip.blocked": "Blocked due to your configuration!",
+  "fasttrading.tooltip.in_progress": "Trading, please hold...",
+
   "fasttrading.tooltip.unblock_hint": "Hold %s to override block",
   "fasttrading.tooltip.unblock_hint.unbound[0]": "Bind %s to a key",
   "fasttrading.tooltip.unblock_hint.unbound[1]": "to override block",
   "fasttrading.tooltip.can_perform.unblock_hint": "(overriding block)",
-  "fasttrading.tooltip.in_progress": "Trading, please hold...",
+
   "fasttrading.tooltip.current_trade.is": "Current trade is:",
   "fasttrading.tooltip.current_trade.and": "and %s",
   "fasttrading.tooltip.current_trade.for": "for %s",
-  "key.fasttrading.overrideBlock": "Override Trade Block",
+
   "fasttrading.midnightconfig.title": "Fast Trading Config",
+
+  "fasttrading.midnightconfig.ticksBetweenActions": "Ticks Between Actions",
+  "fasttrading.midnightconfig.ticksBetweenActions.tooltip": "Delay between each trade/refill action\n20 ticks are equivalent to 1 second",
+
   "fasttrading.midnightconfig.autofillBehavior": "Autofill Behavior",
   "fasttrading.midnightconfig.autofillBehavior.tooltip": "How to fill in the slots for trades\nVanilla: normal autofill behavior\nStrict: match items exactly",
   "fasttrading.midnightconfig.enum.AutofillBehavior.DEFAULT": "Vanilla",
   "fasttrading.midnightconfig.enum.AutofillBehavior.STRICT": "Strict",
-  "fasttrading.midnightconfig.ticksBetweenActions": "Ticks Between Actions",
-  "fasttrading.midnightconfig.ticksBetweenActions.tooltip": "Delay between each trade/refill action\n20 ticks are equivalent to 1 second",
+
   "fasttrading.midnightconfig.tradeBlockBehavior": "Speed Trade Block",
   "fasttrading.midnightconfig.tradeBlockBehavior.tooltip": "When to disallow trading",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.DAMAGEABLE": "Result is Damageable",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.UNSTACKABLE": "Result is Unstackable",
   "fasttrading.midnightconfig.enum.TradeBlockBehavior.DISABLED": "Allow",
+
   "fasttrading.midnightconfig.priceChangeStopBehavior": "Stop on Price Change",
   "fasttrading.midnightconfig.priceChangeStopBehavior.tooltip": "Stop trading whenever the price changes",
   "fasttrading.midnightconfig.enum.PriceChangeStopBehavior.ON_INCREASE": "On Increase",
   "fasttrading.midnightconfig.enum.PriceChangeStopBehavior.ON_CHANGE": "On Change",
   "fasttrading.midnightconfig.enum.PriceChangeStopBehavior.DISABLED": "Never",
+
   "fasttrading.midnightconfig.stopOnNewOffers": "Stop on new offers",
-  "fasttrading.midnightconfig.stopOnNewOffers.tooltip": "Stop trading when new trade offers appear"
+  "fasttrading.midnightconfig.stopOnNewOffers.tooltip": "Stop trading when new trade offers appear",
+
+  "key.fasttrading.overrideBlock": "Override Trade Block"
 }
